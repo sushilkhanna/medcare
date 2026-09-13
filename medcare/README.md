@@ -297,7 +297,7 @@ Answers come from the AI model's own general knowledge (not the app database), w
 **Setup (free, no credit card required):**
 1. Create a free API key at **https://console.groq.com/keys**.
 2. Set the environment variable `AI_API_KEY` (locally in `.env`, or as a Render env var).
-3. That's it — defaults already point at Groq's free `llama-3.1-8b-instant` model.
+3. That's it — defaults already point at Groq's free `openai/gpt-oss-20b` model.
 
 Want a different provider? Any OpenAI-compatible `/chat/completions` endpoint works — just override `AI_API_URL` / `AI_API_MODEL` (e.g. OpenRouter's free models).
 
