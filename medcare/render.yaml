@@ -1,0 +1,48 @@
+databases:
+  - name: medcare-db
+    databaseName: medcare_db
+    plan: free
+
+services:
+  - type: web
+    name: medcare
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8080
+      # ── Database ──
+      # Set DATABASE_URL in Render dashboard as jdbc:postgresql://host:port/db
+      # If using Render's auto-linked DB, it provides this automatically.
+      - key: DATABASE_URL
+        fromDatabase:
+          name: medcare-db
+          property: connectionURI
+      - key: DB_USERNAME
+        fromDatabase:
+          name: medcare-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: medcare-db
+          property: password
+      # ── JWT ──
+      # Set a Base64-encoded string in Render dashboard.
+      # Generate one with: openssl rand -base64 48
+      - key: JWT_SECRET
+        sync: false
+      # ── CORS ──
+      # Set to your Render URL in the dashboard, e.g.:
+      # https://medcare-z17l.onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: DDL_AUTO
+        value: update
+      - key: AI_API_URL
+        value: https://api.groq.com/openai/v1/chat/completions
+      - key: AI_API_KEY
+        sync: false
+      - key: AI_API_MODEL
+        value: openai/gpt-oss-20b
