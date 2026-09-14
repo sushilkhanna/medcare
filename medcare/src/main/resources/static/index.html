@@ -964,7 +964,58 @@
   var selectedBookingDoctorId = null;
   var selectedBookingTime = '09:00 AM';
 
-  function loadAuth()  { try{ return JSON.parse(localStorage.getItem('mc')||'null'); }catch(e){ return null; } }
+  var jwtExpiryTimer = null;
+
+  function getJwtPayload(token) {
+    if (!token || typeof token !== 'string') return null;
+    try {
+      var parts = token.split('.');
+      if (parts.length !== 3) return null;
+      var base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+      var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    } catch(e) {
+      return null;
+    }
+  }
+
+  function isTokenExpired(token) {
+    var p = getJwtPayload(token);
+    if (!p) return true;
+    if (!p.exp) return false;
+    // 5-second buffer to prevent race conditions near expiry
+    return Date.now() >= (p.exp * 1000) - 5000;
+  }
+
+  function scheduleJwtExpiry(token) {
+    clearTimeout(jwtExpiryTimer);
+    if (!token) return;
+    var p = getJwtPayload(token);
+    if (!p || !p.exp) return;
+    var msLeft = (p.exp * 1000) - Date.now();
+    if (msLeft <= 0) {
+      doLogout('Your session has expired. Please sign in again.');
+      return;
+    }
+    jwtExpiryTimer = setTimeout(function() {
+      doLogout('Your session has expired. Please sign in again.');
+    }, msLeft);
+  }
+
+  function loadAuth()  {
+    try {
+      var auth = JSON.parse(localStorage.getItem('mc') || 'null');
+      if (auth && auth.token && isTokenExpired(auth.token)) {
+        clearAuth();
+        return null;
+      }
+      return auth;
+    } catch(e) {
+      return null;
+    }
+  }
   function saveAuth(v) { localStorage.setItem('mc', JSON.stringify(v)); }
   function clearAuth() { localStorage.removeItem('mc'); }
 
@@ -977,12 +1028,25 @@
   }
 
   async function api(method, url, body) {
+    // Proactive client-side expiration check: auto logout if token expired
+    if (S && S.token && isTokenExpired(S.token)) {
+      doLogout('Your session has expired. Please sign in again.');
+      return { ok: false, status: 401, data: null, msg: 'Session expired' };
+    }
+
     var opts = { method: method, headers: { 'Content-Type': 'application/json' } };
     if (S && S.token) opts.headers['Authorization'] = 'Bearer ' + S.token;
     if (body !== undefined) opts.body = JSON.stringify(body);
     try {
       var res = await fetch(API_BASE + url, opts);
-      var j = await res.json();
+      var j = await res.json().catch(function(){ return {}; });
+
+      // If backend returns 401 (Unauthorized) or 403 (Forbidden on authenticated endpoints), automatically log out
+      if (res.status === 401 || (res.status === 403 && !url.includes('/api/auth/login') && !url.includes('/api/auth/register'))) {
+        doLogout('Your session has expired. Please sign in again.');
+        return { ok: false, status: res.status, data: null, msg: j.message || 'Session expired' };
+      }
+
       return { ok: res.ok, status: res.status, data: j.data, msg: j.message };
     } catch(e) {
       return { ok: false, status: 0, data: null, msg: 'Network error: ' + e.message };
@@ -1060,14 +1124,25 @@
     launchApp();
   }
 
-  function doLogout() {
+  function doLogout(reason) {
+    clearTimeout(jwtExpiryTimer);
     closeModal();
-    S = null; clearAuth();
+    S = null;
+    clearAuth();
     disconnectRealtime();
     document.getElementById('shell').classList.add('hidden');
     document.getElementById('ai-fab').classList.add('hidden');
     document.getElementById('login-wrap').classList.remove('hidden');
     document.body.removeAttribute('data-role');
+    pickRole('P', document.getElementById('rt-P'));
+    if (reason) {
+      toast(reason, 'err');
+      var lerr = document.getElementById('lerr');
+      if (lerr) {
+        lerr.textContent = reason;
+        lerr.classList.remove('hidden');
+      }
+    }
   }
 
   function connectRealtime() {
@@ -1130,6 +1205,12 @@
   }
 
   function launchApp() {
+    if (!S || !S.token || isTokenExpired(S.token)) {
+      doLogout('Your session has expired. Please sign in again.');
+      return;
+    }
+    scheduleJwtExpiry(S.token);
+
     var role = S.role;
     document.body.setAttribute('data-role', role);
     document.getElementById('shell').classList.remove('hidden');
@@ -2172,11 +2253,15 @@
 
   window.onload = function() {
     S = loadAuth();
-    if (S && S.token) {
+    if (S && S.token && !isTokenExpired(S.token)) {
       document.getElementById('login-wrap').classList.add('hidden');
       launchApp();
     } else {
-      pickRole('P', document.getElementById('rt-P'));
+      if (S && S.token) {
+        doLogout('Your session has expired. Please sign in again.');
+      } else {
+        pickRole('P', document.getElementById('rt-P'));
+      }
     }
   };
 </script>
