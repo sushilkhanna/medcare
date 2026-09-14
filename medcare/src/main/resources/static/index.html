@@ -144,7 +144,7 @@
     .card-hd {
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 18px; font-family: var(--font-display); font-size: 15px;
-      font-weight: 700; color: var(--text-1); gap: 12px;
+      font-weight: 700; color: var(--text-1); gap: 12px; flex-wrap: wrap;
     }
     
     /* ─── LOGIN SCREEN ─── */
@@ -408,10 +408,14 @@
     }
     .mc:hover .mc-hero { transform: scale(1.05); }
     .mc-name {
-      font-family: var(--font-display); font-size: 14.5px; font-weight: 700; color: var(--text-1);
-      margin-bottom: 2px; line-height: 1.3;
+      font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text-1);
+      margin-bottom: 2px; line-height: 1.3; overflow: hidden; display: -webkit-box;
+      -webkit-line-clamp: 2; -webkit-box-orient: vertical; min-height: 36px;
     }
-    .mc-brand { font-size: 11.5px; color: var(--text-3); margin-bottom: 12px; }
+    .mc-brand {
+      font-size: 11.5px; color: var(--text-3); margin-bottom: 12px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
     .mc-footer {
       display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px;
     }
@@ -472,16 +476,20 @@
     /* ─── ORDER TRACKING STEPPER ─── */
     .order-stepper {
       display: flex; align-items: center; justify-content: space-between;
-      position: relative; margin: 18px 0 12px; padding: 0 10px;
+      position: relative; margin: 20px 0 14px; padding: 0 10px;
+    }
+    .order-stepper::before {
+      content: ''; position: absolute; top: 14px; left: 24px; right: 24px; height: 2px;
+      background: var(--border); z-index: 1;
     }
     .order-step {
-      display: flex; flex-direction: column; align-items: center; gap: 5px;
-      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      position: relative; z-index: 2; text-align: center;
     }
     .step-dot {
       width: 28px; height: 28px; border-radius: 50%; background: #e2e8f0;
       color: var(--text-muted); display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 700; transition: all 0.2s;
+      font-size: 12px; font-weight: 700; transition: all 0.2s; border: 2px solid #fff;
     }
     .order-step.completed .step-dot {
       background: #10b981; color: #fff; box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
@@ -489,18 +497,21 @@
     .order-step.active .step-dot {
       background: #0284c7; color: #fff; box-shadow: 0 0 10px rgba(2, 132, 199, 0.4);
     }
-    .step-lbl { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; }
-    .order-step.completed .step-lbl, .order-step.active .step-lbl { color: var(--text-1); }
+    .step-lbl { font-size: 11px; font-weight: 600; color: var(--text-3); text-transform: uppercase; white-space: nowrap; }
+    .order-step.completed .step-lbl, .order-step.active .step-lbl { color: var(--text-1); font-weight: 700; }
     
     /* ─── TABLES ─── */
-    .tbl-wrap { width: 100%; overflow-x: auto; border-radius: var(--r-sm); border: 1px solid var(--border); }
-    .tbl { width: 100%; border-collapse: collapse; min-width: 600px; text-align: left; }
-    .tbl th {
-      background: #f8fafc; padding: 12px 16px; font-size: 11px; font-weight: 700;
-      color: var(--text-3); text-transform: uppercase; letter-spacing: 0.6px;
-      border-bottom: 1px solid var(--border);
+    .tbl-wrap {
+      width: 100%; overflow-x: auto; border-radius: var(--r-sm); border: 1px solid var(--border);
+      -webkit-overflow-scrolling: touch; background: #fff;
     }
-    .tbl td { padding: 13px 16px; font-size: 13px; border-bottom: 1px solid var(--border); }
+    .tbl { width: 100%; border-collapse: collapse; min-width: 580px; text-align: left; }
+    .tbl th {
+      background: #f8fafc; padding: 12px 14px; font-size: 11px; font-weight: 700;
+      color: var(--text-3); text-transform: uppercase; letter-spacing: 0.6px;
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    .tbl td { padding: 12px 14px; font-size: 13px; border-bottom: 1px solid var(--border); }
     .tbl tr:last-child td { border-bottom: none; }
     .tbl tr:hover td { background: #f8fafc; }
     
@@ -527,7 +538,7 @@
     /* ─── AI CHAT DRAWER / MODAL ─── */
     .ai-chips-list { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
     .ai-chip {
-      padding: 4px 10px; border-radius: var(--r-full); background: #f1f5f9;
+      padding: 5px 11px; border-radius: var(--r-full); background: #f1f5f9;
       border: 1px solid var(--border); font-size: 11px; font-weight: 600;
       color: var(--text-2); cursor: pointer; transition: all 0.15s;
     }
@@ -543,14 +554,14 @@
     
     /* ─── MODAL ─── */
     .modal-bg {
-      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
       z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px;
     }
     .modal-box {
       background: #ffffff; border-radius: var(--r-lg); width: 520px; max-width: 100%;
-      max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-float);
-      border: 1px solid rgba(255, 255, 255, 0.6); padding: 28px; position: relative;
+      max-height: 90vh; max-height: 90dvh; overflow-y: auto; box-shadow: var(--shadow-float);
+      border: 1px solid rgba(255, 255, 255, 0.7); padding: 28px; position: relative;
     }
     .modal-hd {
       display: flex; align-items: center; justify-content: space-between;
@@ -573,18 +584,206 @@
     .t-ok { background: #065f46; color: #fff; border-left: 4px solid #34d399; }
     .t-err { background: #991b1b; color: #fff; border-left: 4px solid #f87171; }
     .t-info { background: #1e293b; color: #fff; border-left: 4px solid #38bdf8; }
+
+    /* ─── RESPONSIVE LAYOUT UTILITIES ─── */
+    .responsive-split-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;
+    }
+    .cart-grid {
+      display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start;
+    }
+    .admin-split-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
+    }
+    .analytics-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 16px;
+    }
+    .page-header-row {
+      display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .cart-item-row {
+      display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border); gap: 12px;
+    }
+    .mobile-srch-btn {
+      display: none; background: var(--surface-subtle); border: 1.5px solid var(--border);
+      border-radius: var(--r-full); width: 36px; height: 36px; font-size: 15px; cursor: pointer;
+      align-items: center; justify-content: center; color: var(--text-2); flex-shrink: 0;
+    }
+    .srch-close-btn {
+      display: none; background: none; border: none; font-size: 16px; color: var(--text-3);
+      cursor: pointer; padding: 4px 8px; line-height: 1;
+    }
+
+    /* ─── MOBILE BOTTOM NAVIGATION ─── */
+    .mobile-nav {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border); z-index: 300;
+      height: calc(62px + env(safe-area-inset-bottom, 0px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+      align-items: center; justify-content: space-around;
+    }
+    .mobile-nav-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 3px; padding: 6px 2px; color: var(--text-3); font-family: var(--font-display);
+      font-size: 10px; font-weight: 600; cursor: pointer; transition: all 0.15s ease; user-select: none;
+      position: relative; height: 100%;
+    }
+    .mobile-nav-item .mn-ico { font-size: 20px; line-height: 1; transition: transform 0.15s; }
+    .mobile-nav-item.active { color: var(--role-accent, #0284c7); font-weight: 800; }
+    .mobile-nav-item.active .mn-ico { transform: scale(1.15) translateY(-2px); }
+    .mobile-nav-item .mn-badge {
+      position: absolute; top: 4px; right: calc(50% - 16px); background: #ef4444; color: #fff;
+      font-size: 9px; font-weight: 800; padding: 1px 5px; border-radius: 9999px; min-width: 14px;
+      text-align: center; line-height: 12px; box-shadow: 0 2px 5px rgba(239, 68, 68, 0.4);
+    }
     
-    /* Responsive rules */
+    /* ─── RESPONSIVE BREAKPOINTS ─── */
+    @media (max-width: 900px) {
+      .cart-grid { grid-template-columns: 1fr; }
+    }
+
     @media (max-width: 768px) {
-      .sidebar { position: fixed; inset: 0 auto 0 0; transform: translateX(-100%); }
+      .sidebar {
+        position: fixed; inset: 0 auto 0 0; width: 280px; max-width: 85vw;
+        transform: translateX(-100%); z-index: 1000; box-shadow: 10px 0 30px rgba(0,0,0,0.3);
+      }
       .sidebar.open { transform: translateX(0); }
-      .sb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; }
+      .sb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 999; backdrop-filter: blur(3px); }
       .sb-overlay.open { display: block; }
-      .hbtn { display: block; }
-      .topbar { padding: 0 16px; }
-      .srchw { width: 160px; }
-      .srchw:focus-within { width: 200px; }
-      .pbody { padding: 18px 14px; }
+      .hbtn { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; }
+      
+      /* Topbar responsive */
+      .topbar { padding: 0 14px; height: 58px; gap: 8px; position: relative; }
+      .tb-left { gap: 8px; flex: 1; min-width: 0; }
+      #ptitle { font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .tb-right { gap: 8px; flex-shrink: 0; }
+      
+      .mobile-srch-btn { display: flex; }
+      .srchw {
+        display: none; position: absolute; top: 0; left: 0; right: 0; height: 58px;
+        width: 100% !important; border-radius: 0; border: none; border-bottom: 1px solid var(--border);
+        background: #ffffff; z-index: 50; padding: 0 14px; box-shadow: var(--shadow-md);
+      }
+      .srchw.open { display: flex; align-items: center; gap: 8px; }
+      .srch-close-btn { display: block; }
+      
+      .role-pill { padding: 4px 10px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+      
+      /* Content padding accounting for mobile bottom nav */
+      .pbody {
+        padding: 16px 12px calc(76px + env(safe-area-inset-bottom, 0px));
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      /* Show mobile bottom nav */
+      .mobile-nav { display: flex; }
+      
+      /* Welcome banner */
+      .wb {
+        flex-direction: column; align-items: flex-start; padding: 18px 16px; gap: 14px;
+      }
+      .wb button, .wb .btn { width: 100%; justify-content: center; }
+      .wb-title { font-size: 17px; }
+      .wb-sub { font-size: 12.5px; }
+      
+      /* Stat Cards: clean 2x2 grid */
+      .sg { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 18px; }
+      .sc { padding: 14px 12px; }
+      .sc-hd { margin-bottom: 8px; }
+      .sc-ico { width: 34px; height: 34px; font-size: 16px; border-radius: 9px; }
+      .sc-v { font-size: 20px; }
+      .sc-l { font-size: 11px; }
+      .sc-meta { font-size: 10px; margin-top: 4px; }
+      
+      /* Split grids collapse to 1 column */
+      .responsive-split-grid { grid-template-columns: 1fr; gap: 16px; }
+      .admin-split-grid { grid-template-columns: 1fr; gap: 16px; }
+      
+      /* Medicines Store & Catalog */
+      .store-filter-bar { flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 14px; }
+      .category-pills {
+        overflow-x: auto; white-space: nowrap; padding-bottom: 6px; gap: 6px;
+        -webkit-overflow-scrolling: touch; scrollbar-width: none;
+      }
+      .category-pills::-webkit-scrollbar { display: none; }
+      .cat-pill { flex-shrink: 0; padding: 6px 12px; font-size: 11.5px; }
+      .sort-box { justify-content: space-between; width: 100%; }
+      .sort-select { flex: 1; max-width: 180px; }
+      
+      /* Medicine Cards: 2-column e-commerce grid */
+      .mg { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .mc { padding: 12px; border-radius: 12px; }
+      .mc-hero { height: 65px; font-size: 28px; margin-bottom: 8px; border-radius: 8px; }
+      .mc-cat-badge { font-size: 9px; padding: 2px 6px; }
+      .mc-rx-badge { font-size: 9px; padding: 1px 5px; }
+      .mc-name { font-size: 12.5px; line-height: 1.25; margin-bottom: 2px; }
+      .mc-brand { font-size: 10.5px; margin-bottom: 8px; }
+      .mc-price { font-size: 16px; }
+      .btn-ask-ai { font-size: 10.5px; padding: 5px; }
+      
+      /* Doctors */
+      .doc-grid { grid-template-columns: 1fr; gap: 12px; }
+      .doc-card { padding: 16px; }
+      .doc-av { width: 44px; height: 44px; font-size: 14px; }
+      .doc-name { font-size: 14px; }
+      
+      /* Tables */
+      .tbl-wrap { margin: 0 -4px; border-radius: 10px; }
+      .tbl th { padding: 9px 10px; font-size: 10px; }
+      .tbl td { padding: 10px; font-size: 12px; }
+      
+      /* Stepper */
+      .order-stepper { margin: 16px 0 10px; padding: 0 4px; }
+      .order-stepper::before { top: 12px; left: 14px; right: 14px; }
+      .step-dot { width: 24px; height: 24px; font-size: 10px; }
+      .step-lbl { font-size: 9px; }
+      
+      /* Modals: bottom sheet on mobile */
+      .modal-bg { padding: 12px; align-items: flex-end; }
+      .modal-box {
+        width: 100%; max-height: 85vh; max-height: 85dvh; padding: 20px 16px;
+        border-radius: 20px 20px 12px 12px;
+      }
+      .modal-hd { margin-bottom: 14px; padding-bottom: 10px; }
+      
+      /* Floating AI Pharmacist FAB */
+      .ai-fab {
+        bottom: calc(72px + env(safe-area-inset-bottom, 0px)); right: 16px;
+        width: 48px; height: 48px; font-size: 22px;
+      }
+      
+      /* Toast */
+      #toast {
+        top: 14px; left: 14px; right: 14px; width: auto; justify-content: center;
+        font-size: 12.5px; padding: 10px 16px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .lbox { padding: 26px 18px; border-radius: 16px; }
+      .llogo { font-size: 24px; }
+      .llogo-icon { width: 36px; height: 36px; font-size: 18px; }
+      .qlogin { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .qlbtn { padding: 8px 4px; }
+      .qlbtn .qi { font-size: 18px; }
+      .qlbtn .qn { font-size: 11px; }
+      .qlbtn .qr { font-size: 9px; display: none; }
+      .sc-pill { font-size: 10px; padding: 3px 8px; }
+      
+      .cart-item-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .cart-item-row > div:last-child { width: 100%; justify-content: space-between; display: flex; align-items: center; }
+      
+      .doc-chips { gap: 4px; }
+      .chip { font-size: 10px; padding: 2px 6px; }
+      
+      .slot-chips-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .slot-chip { padding: 8px 4px; font-size: 11px; }
+      
+      .analytics-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      
+      .fg input, .fg select, .fg textarea { font-size: 15px; }
     }
   </style>
 </head>
@@ -717,13 +916,15 @@
   <div class="main">
     <header class="topbar">
       <div class="tb-left">
-        <button class="hbtn" onclick="openSidebar()">☰</button>
+        <button class="hbtn" onclick="openSidebar()" aria-label="Open Navigation">☰</button>
         <h1 id="ptitle">Dashboard</h1>
       </div>
       <div class="tb-right">
+        <button class="mobile-srch-btn" id="mobile-srch-btn" onclick="toggleMobileSearch()" aria-label="Search">🔍</button>
         <div class="srchw" id="srchw">
           <span style="color:var(--text-muted)">🔍</span>
           <input type="text" id="srch" placeholder="Search medicines or doctors…" oninput="handleGlobalSearch()"/>
+          <button class="srch-close-btn" onclick="toggleMobileSearch(false)" aria-label="Close search">✕</button>
         </div>
         <span class="role-pill" id="role-pill">● Patient</span>
       </div>
@@ -731,6 +932,8 @@
 
     <main class="pbody" id="pbody"></main>
   </div>
+
+  <nav class="mobile-nav" id="mobile-nav"></nav>
 </div>
 
 <!-- FLOATING ROBOT AI ASSISTANT -->
@@ -907,6 +1110,25 @@
     if (curPage === 'ph') pgPH();
   }
 
+  function toggleMobileSearch(force) {
+    var srchw = document.getElementById('srchw');
+    if (!srchw) return;
+    var isOpen = force !== undefined ? force : !srchw.classList.contains('open');
+    srchw.classList.toggle('open', isOpen);
+    if (isOpen) {
+      var inp = document.getElementById('srch');
+      if (inp) { inp.focus(); }
+    }
+  }
+
+  function updateCartBadge(count) {
+    var b = document.getElementById('cart-nav-badge');
+    if (b) {
+      b.textContent = count || '';
+      b.style.display = count && count > 0 ? 'inline-block' : 'none';
+    }
+  }
+
   function launchApp() {
     var role = S.role;
     document.body.setAttribute('data-role', role);
@@ -947,22 +1169,65 @@
       ]
     };
 
+    var mobileNavDefs = {
+      PATIENT: [
+        { i:'🏠', l:'Home',     p:'ph' },
+        { i:'💊', l:'Pharmacy', p:'pm' },
+        { i:'🛒', l:'Cart',     p:'pc', hasBadge: true },
+        { i:'📦', l:'Orders',   p:'po' },
+        { i:'📅', l:'Appts',    p:'pa' }
+      ],
+      DOCTOR: [
+        { i:'🏠', l:'Home',     p:'dh' },
+        { i:'📅', l:'Appts',    p:'da' },
+        { i:'👥', l:'Patients', p:'dp' },
+        { i:'👤', l:'Profile',  p:'pp' }
+      ],
+      ADMIN: [
+        { i:'🏠', l:'Home',     p:'ah' },
+        { i:'💊', l:'Meds',     p:'am' },
+        { i:'👨‍⚕️', l:'Docs',     p:'ad' },
+        { i:'📦', l:'Orders',   p:'ao' },
+        { i:'☰', l:'More',     action:'menu' }
+      ]
+    };
+
     var items = navs[role] || navs.PATIENT;
     var nav = document.getElementById('sb-nav');
     nav.innerHTML = '<div class="sb-sec">Main Navigation</div>';
     items.forEach(function(item, idx) {
       var el = document.createElement('div');
       el.className = 'sb-item' + (idx===0?' on':'');
+      el.setAttribute('data-p', item.p);
       el.innerHTML = '<span class="sb-ico">'+item.i+'</span><span>'+item.l+'</span>';
       el.onclick = function(){
-        document.querySelectorAll('.sb-item').forEach(function(x){ x.classList.remove('on'); });
-        el.classList.add('on');
-        document.getElementById('ptitle').textContent = item.l;
         goPage(item.p);
         closeSidebar();
       };
       nav.appendChild(el);
     });
+
+    // Render Mobile Bottom Navigation Bar
+    var mItems = mobileNavDefs[role] || mobileNavDefs.PATIENT;
+    var mNav = document.getElementById('mobile-nav');
+    if (mNav) {
+      mNav.innerHTML = '';
+      mItems.forEach(function(m, idx) {
+        var mEl = document.createElement('div');
+        mEl.className = 'mobile-nav-item' + (idx===0?' active':'');
+        if (m.p) mEl.setAttribute('data-p', m.p);
+        var badgeHtml = m.hasBadge ? '<span class="mn-badge" id="cart-nav-badge" style="display:none">0</span>' : '';
+        mEl.innerHTML = '<span class="mn-ico">' + m.i + '</span><span>' + m.l + '</span>' + badgeHtml;
+        mEl.onclick = function() {
+          if (m.action === 'menu') {
+            openSidebar();
+          } else if (m.p) {
+            goPage(m.p);
+          }
+        };
+        mNav.appendChild(mEl);
+      });
+    }
 
     document.getElementById('ptitle').textContent = items[0].l;
     document.getElementById('ai-fab').classList.toggle('hidden', role !== 'PATIENT');
@@ -973,6 +1238,22 @@
 
   function goPage(p) {
     curPage = p;
+    toggleMobileSearch(false);
+    
+    // Sync sidebar active state
+    document.querySelectorAll('.sb-item').forEach(function(x){
+      x.classList.toggle('on', x.getAttribute('data-p') === p);
+    });
+
+    // Sync mobile bottom nav active state
+    document.querySelectorAll('.mobile-nav-item').forEach(function(x){
+      x.classList.toggle('active', x.getAttribute('data-p') === p);
+    });
+
+    // Reset scroll position on navigation
+    var pb = document.getElementById('pbody');
+    if (pb) pb.scrollTop = 0;
+
     loading();
     if (p==='ph') pgPH();
     else if (p==='pm') pgPM();
@@ -1018,6 +1299,7 @@
     var appts = aR.data || [];
     var cart = cR.data || {};
     var upcoming = appts.filter(function(a){ return a.status==='PENDING'||a.status==='CONFIRMED'; });
+    updateCartBadge(cart.itemCount || 0);
 
     render(
       '<div class="wb">' +
@@ -1045,32 +1327,32 @@
         '</div>' +
         '<div class="sc">' +
           '<div class="sc-hd"><span class="sc-l">Account Health</span><div class="sc-ico" style="background:#f0fdf4;color:#16a34a">🛡️</div></div>' +
-          '<div class="sc-v" style="color:#16a34a;font-size:22px">Verified Active</div>' +
+          '<div class="sc-v" style="color:#16a34a;font-size:20px">Verified Active</div>' +
           '<div class="sc-meta">JWT 256-bit Encrypted</div>' +
         '</div>' +
       '</div>' +
-      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px">' +
+      '<div class="responsive-split-grid">' +
         '<div class="card">' +
           '<div class="card-hd"><span>📅 Upcoming Doctor Appointments</span><button class="btn btn-sm btn-primary" onclick="pgPA()">+ Book Appointment</button></div>' +
           (upcoming.length ? upcoming.slice(0,3).map(function(a){
-            return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px;border:1px solid var(--border);border-radius:10px;margin-bottom:10px">' +
-              '<div>' +
-                '<div style="font-weight:700;font-size:13.5px">' + a.doctorName + '</div>' +
-                '<div style="font-size:12px;color:var(--text-3)">' + a.specialization + ' · 📅 ' + a.appointmentDate + ' at ' + a.appointmentTime + '</div>' +
+            return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px;border:1px solid var(--border);border-radius:10px;margin-bottom:10px;gap:8px">' +
+              '<div style="min-width:0">' +
+                '<div style="font-weight:700;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + a.doctorName + '</div>' +
+                '<div style="font-size:11.5px;color:var(--text-3)">' + a.specialization + ' · 📅 ' + a.appointmentDate + ' at ' + a.appointmentTime + '</div>' +
               '</div>' +
-              badge(a.status) +
+              '<div style="flex-shrink:0">' + badge(a.status) + '</div>' +
             '</div>';
           }).join('') : '<div style="text-align:center;padding:30px;color:var(--text-3)">No pending appointments. <br/><button class="btn btn-sm btn-primary" style="margin-top:10px" onclick="pgPA()">Consult a Doctor</button></div>') +
         '</div>' +
         '<div class="card">' +
           '<div class="card-hd"><span>📦 Recent Orders</span><button class="btn btn-sm btn-gray" onclick="pgPO()">View All Orders</button></div>' +
           (orders.length ? orders.slice(0,4).map(function(o){
-            return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px;border:1px solid var(--border);border-radius:10px;margin-bottom:10px">' +
-              '<div>' +
+            return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px;border:1px solid var(--border);border-radius:10px;margin-bottom:10px;gap:8px">' +
+              '<div style="min-width:0">' +
                 '<div style="font-weight:700;font-size:13.5px">Order #' + o.id + ' (' + o.itemCount + ' items)</div>' +
                 '<div style="font-size:11.5px;color:var(--text-3)">₹' + o.totalAmount + ' · ' + (o.orderedAt||'').split('T')[0] + '</div>' +
               '</div>' +
-              badge(o.status) +
+              '<div style="flex-shrink:0">' + badge(o.status) + '</div>' +
             '</div>';
           }).join('') : '<div style="text-align:center;padding:30px;color:var(--text-3)">No orders placed yet. <br/><button class="btn btn-sm btn-primary" style="margin-top:10px" onclick="pgPM()">Browse Medicines</button></div>') +
         '</div>' +
@@ -1178,8 +1460,13 @@
 
   async function addCart(id, name) {
     var r = await api('POST', '/api/cart/add', { medicineId: id, quantity: 1 });
-    if (r.ok) toast('✓ ' + name + ' added to your cart', 'ok');
-    else toast(r.msg || 'Could not add to cart', 'err');
+    if (r.ok) {
+      toast('✓ ' + name + ' added to your cart', 'ok');
+      var cR = await api('GET', '/api/cart');
+      if (cR.ok && cR.data) updateCartBadge(cR.data.itemCount || 0);
+    } else {
+      toast(r.msg || 'Could not add to cart', 'err');
+    }
   }
 
   // ── CART & CHECKOUT ──
@@ -1187,6 +1474,7 @@
     var r = await api('GET', '/api/cart');
     var c = r.data;
     if (!c || !c.items || c.items.length === 0) {
+      updateCartBadge(0);
       render(
         '<div style="text-align:center;padding:70px 20px;background:#fff;border-radius:16px;border:1px solid var(--border)">' +
           '<div style="font-size:52px">🛒</div>' +
@@ -1198,26 +1486,27 @@
       return;
     }
 
+    updateCartBadge(c.itemCount || 0);
     var subtotal = c.total || '0.00';
     var gst = (parseFloat(subtotal) * 0.18).toFixed(2);
     var grandTotal = (parseFloat(subtotal) + parseFloat(gst)).toFixed(2);
 
     render(
-      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px">' +
+      '<div class="cart-grid">' +
         '<div class="card">' +
           '<div class="card-hd"><span>🛒 Your Cart (' + c.itemCount + ' items)</span><button class="btn btn-sm btn-gray" onclick="clearCart()">Clear Cart</button></div>' +
           c.items.map(function(item, idx){
-            return '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);gap:12px">' +
-              '<div style="display:flex;align-items:center;gap:12px">' +
-                '<div style="width:44px;height:44px;border-radius:10px;background:#eff6ff;display:flex;align-items:center;justify-content:center;font-size:22px">' + emo(idx) + '</div>' +
-                '<div>' +
-                  '<div style="font-weight:700;font-size:14px">' + item.medicineName + '</div>' +
+            return '<div class="cart-item-row">' +
+              '<div style="display:flex;align-items:center;gap:12px;min-width:0">' +
+                '<div style="width:44px;height:44px;border-radius:10px;background:#eff6ff;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">' + emo(idx) + '</div>' +
+                '<div style="min-width:0">' +
+                  '<div style="font-weight:700;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + item.medicineName + '</div>' +
                   '<div style="font-size:12px;color:var(--text-3)">' + item.brand + ' · ₹' + item.price + ' each</div>' +
                 '</div>' +
               '</div>' +
-              '<div style="display:flex;align-items:center;gap:14px">' +
+              '<div style="display:flex;align-items:center;gap:14px;flex-shrink:0">' +
                 '<div style="font-family:var(--font-display);font-weight:800;font-size:15px;color:#0284c7">₹' + (item.price * item.quantity).toFixed(2) + '</div>' +
-                '<button class="btn btn-sm btn-gray" onclick="removeCartItem(' + item.id + ')">✕</button>' +
+                '<button class="btn btn-sm btn-gray" onclick="removeCartItem(' + item.id + ')" aria-label="Remove item">✕</button>' +
               '</div>' +
             '</div>';
           }).join('') +
@@ -1239,17 +1528,21 @@
   async function removeCartItem(id) {
     await api('DELETE', '/api/cart/' + id);
     toast('Item removed from cart', 'info');
+    var cR = await api('GET', '/api/cart');
+    updateCartBadge(cR.ok && cR.data ? (cR.data.itemCount || 0) : 0);
     pgPC();
   }
   async function clearCart() {
     await api('DELETE', '/api/cart/clear');
     toast('Cart cleared', 'info');
+    updateCartBadge(0);
     pgPC();
   }
   async function checkoutCart() {
     var r = await api('POST', '/api/orders/checkout');
     if (r.ok) {
       toast('🎉 Order placed successfully! Tracking initiated.', 'ok');
+      updateCartBadge(0);
       goPage('po');
     } else {
       toast(r.msg || 'Checkout failed', 'err');
@@ -1308,17 +1601,17 @@
     var appts = aR.data || [];
 
     render(
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">' +
-        '<div><h2 style="font-size:18px;font-weight:800">Certified Medical Specialists</h2><div style="font-size:13px;color:var(--text-3)">Book video or clinic consultations with verified doctors.</div></div>' +
-        '<button class="btn btn-primary" onclick="openBookingModal(null)">+ Book Appointment</button>' +
+      '<div class="page-header-row">' +
+        '<div><h2 style="font-size:clamp(16px,4vw,18px);font-weight:800">Certified Medical Specialists</h2><div style="font-size:12.5px;color:var(--text-3)">Book video or clinic consultations with verified doctors.</div></div>' +
+        '<button class="btn btn-primary btn-sm" onclick="openBookingModal(null)">+ Book Appointment</button>' +
       '</div>' +
-      '<div class="doc-grid" style="margin-bottom:32px">' +
+      '<div class="doc-grid" style="margin-bottom:28px">' +
         doctors.map(function(d){
           return '<div class="doc-card">' +
             '<div>' +
               '<div class="doc-header">' +
                 '<div class="doc-av">' + ini(d.name) + '</div>' +
-                '<div>' +
+                '<div style="min-width:0">' +
                   '<div class="doc-name">' + d.name + '</div>' +
                   '<div class="doc-spec">' + d.specialization + '</div>' +
                   '<div class="doc-qual">' + d.qualification + '</div>' +
@@ -1387,11 +1680,11 @@
       '</div>' +
       '<div class="fg">' +
         '<label>Reason for Visit / Symptoms</label>' +
-        '<textarea id="breason" placeholder="e.g. Mild fever, chest pain, prescription refill…"></textarea>' +
+        '<textarea id="breason" placeholder="e.g. Mild fever, chest pain, prescription refill…" rows="3"></textarea>' +
       '</div>' +
-      '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px">' +
-        '<button type="button" class="btn btn-gray" onclick="closeModal()">Cancel</button>' +
-        '<button type="submit" class="btn btn-primary">Confirm Appointment</button>' +
+      '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap">' +
+        '<button type="button" class="btn btn-gray" style="flex:1" onclick="closeModal()">Cancel</button>' +
+        '<button type="submit" class="btn btn-primary" style="flex:1.5">Confirm Appointment</button>' +
       '</div>' +
     '</form>';
 
@@ -1666,7 +1959,7 @@
         '<div class="sc"><div class="sc-hd"><span class="sc-l">Low Stock Alert</span><div class="sc-ico" style="background:#fee2e2;color:#dc2626">⚠️</div></div><div class="sc-v" style="color:#dc2626">' + (s.lowStockMedicines||0) + '</div></div>' +
         '<div class="sc"><div class="sc-hd"><span class="sc-l">Total Appointments</span><div class="sc-ico" style="background:#fffbeb;color:#d97706">📅</div></div><div class="sc-v">' + (s.totalAppointments||0) + '</div></div>' +
       '</div>' +
-      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">' +
+      '<div class="admin-split-grid">' +
         '<div class="card">' +
           '<div class="card-hd">⚡ Quick Administrative Actions</div>' +
           '<div style="display:flex;flex-direction:column;gap:10px">' +
@@ -1867,7 +2160,7 @@
     render(
       '<div class="card">' +
         '<div class="card-hd">📊 Real-Time Platform Analytics</div>' +
-        '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:16px">' +
+        '<div class="analytics-grid">' +
           '<div style="padding:16px;background:#eff6ff;border-radius:12px"><h4>Total Users</h4><h2 style="color:#0284c7">' + (s.totalUsers||0) + '</h2></div>' +
           '<div style="padding:16px;background:#ecfdf5;border-radius:12px"><h4>Active Doctors</h4><h2 style="color:#059669">' + (s.totalDoctors||0) + '</h2></div>' +
           '<div style="padding:16px;background:#fff1f2;border-radius:12px"><h4>Medicines Listed</h4><h2 style="color:#e11d48">' + (s.totalMedicines||0) + '</h2></div>' +
